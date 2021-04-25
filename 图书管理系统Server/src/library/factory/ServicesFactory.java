@@ -23,6 +23,11 @@ public class ServicesFactory {
 		map.put("getAllUserInfo",new TryGetAllUserInfoService());
 		map.put("deleteUser",new TryDeleteUserService());
 		map.put("modifyUserPermission",new TryModifyUserPermissionService());
+		map.put("modifyUserPassword",new TryModifyUserPasswordService());
+		map.put("getBorrowInfo",new TryGetBorrowInfoService());
+		map.put("returnBook",new TryReturnBookService());
+		map.put("borrowBook",new TryBorrowBookService());
+		
 	}
 	public static OperateService getOperateService(String command) {
 		return map.get(command);
