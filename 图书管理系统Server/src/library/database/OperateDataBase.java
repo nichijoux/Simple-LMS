@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JOptionPane;
 
 import library.data.Book;
+import library.data.Borrow;
+import library.data.ListBorrow;
 import library.data.ListUser;
 import library.data.MapBookTypeNum;
 import library.data.User;
@@ -343,6 +344,79 @@ public class OperateDataBase {
 	//修改用户权限
 	public static boolean modifyUserPermission(String username) {
 		String sql = "update User set UserType = !UserType where UserName = '" + username +"'";
+		System.out.println(sql);
+		return 1 == OperateDataBase.executeUpdate(sql);
+	}
+	
+	//修改用户密码
+	public static boolean modifyUserPassword(String username,String password) {
+		String sql = "update User set PassWord = '" + password + "' where UserName = '" + username + "'";
+		System.out.println(sql);
+		return 1 == OperateDataBase.executeUpdate(sql);
+	}
+	
+	//历史借阅查询
+	public static ListBorrow getHistoryBorrowInfo(String username) {
+		String sql = "select BookName,Author,BookType,BorrowDate,ReturnDate from Borrow,User,Book where Borrow.BookID = Book.BookID and Borrow.UserID = User.UserID and UserName = '" + username + "' and ReturnDate is not null";
+		System.out.println(sql);
+		ResultSet resultSet = OperateDataBase.executeQuery(sql);
+		List<Borrow> list = new ArrayList<Borrow>();
+		if(resultSet == null) {
+			System.out.println("null result");
+		}else {
+			try {
+				while(resultSet.next()) {
+					Borrow borrow = new Borrow();
+					borrow.setBookName(resultSet.getString("BookName"));
+					borrow.setAuthor(resultSet.getString("author"));
+					borrow.setBookType(resultSet.getString("BookType"));
+					borrow.setBorrowDate(resultSet.getDate("BorrowDate"));
+					borrow.setReturnDate(resultSet.getDate("ReturnDate"));
+					list.add(borrow);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return new ListBorrow(list);
+	}
+	
+	//当前借阅查询
+	public static ListBorrow getCurrentBorrowInfo(String username) {
+		String sql = "select BookName,Author,BookType,BorrowDate,ReturnDate from Borrow,User,Book where Borrow.BookID = Book.BookID and Borrow.UserID = User.UserID and UserName = '" + username + "' and ReturnDate is null";
+		System.out.println(sql);
+		ResultSet resultSet = OperateDataBase.executeQuery(sql);
+		List<Borrow> list = new ArrayList<Borrow>();
+		if(resultSet == null) {
+			System.out.println("null result");
+		}else {
+			try {
+				while(resultSet.next()) {
+					Borrow borrow = new Borrow();
+					borrow.setBookName(resultSet.getString("BookName"));
+					borrow.setAuthor(resultSet.getString("author"));
+					borrow.setBookType(resultSet.getString("BookType"));
+					borrow.setBorrowDate(resultSet.getDate("BorrowDate"));
+					borrow.setReturnDate(resultSet.getDate("ReturnDate"));
+					list.add(borrow);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return new ListBorrow(list);
+	}
+	
+	//图书借阅
+	public static boolean borrowBook(String username,String bookname,String booktype,String author) {
+		String sql = "insert into Borrow (UserID,BookID) values((select UserID from User where username = '" + username + "'),(select BookID from Book where Bookname ='" + bookname + "' and author = '" + author + "' and booktype = '" + booktype + "'))";
+		System.out.println(sql);
+		return 1 == OperateDataBase.executeUpdate(sql);
+	}
+	
+	//归还图书
+	public static boolean returnBook(String username,String bookname,String booktype,String author) {
+		String sql = "UPDATE Borrow set returnDate = CURRENT_TIMESTAMP WHERE BorrowID in (select* from (select b.borrowID from borrow b,book,user where b.userID = user.userID and book.bookid = b.bookid and username ='" + username + "' and author = '" + author + "' and booktype ='" + booktype + "')b)";
 		System.out.println(sql);
 		return 1 == OperateDataBase.executeUpdate(sql);
 	}
