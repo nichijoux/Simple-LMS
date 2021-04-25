@@ -198,6 +198,7 @@ public class Library extends JFrame {
 		JMenuItem borrowManageItem = new JMenuItem("借阅图书管理");
 		borrowManageItem.setIcon(LoadIcon.getIcon("bookBorrowMenuBar.png"));
 		borrowManageItem.addActionListener(MenuActions.getBookBorrowAction());
+		borrowManageMenu.add(borrowManageItem);
 		
 		JMenu sysManageMenu = new JMenu(); 								// 系统维护
 		sysManageMenu.setIcon(LoadIcon.getIcon("jcwhcd.jpg"));
