@@ -55,7 +55,7 @@ public class BorrowFrame extends JInternalFrame {
 	public BorrowFrame() {
 		super();
 		setClosable(true);		//可关闭
-		setBounds(300, 300, 700, 435);
+		setBounds(200, 140, 700, 435);
 		setTitle("借阅管理");
 		
 		//logo图片显示
