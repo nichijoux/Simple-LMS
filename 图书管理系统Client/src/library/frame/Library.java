@@ -1,9 +1,21 @@
 package library.frame;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.net.MalformedURLException;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 
 import library.util.LoadIcon;
@@ -105,6 +117,8 @@ public class Library extends JFrame {
 		//书籍借阅
 		JButton bookBorrowButton = new JButton();
 		BarAddButton(toolBar,bookBorrowButton, "bookBorrow.jpg");
+		//借书的动作监听器
+		bookBorrowButton.addActionListener(MenuActions.getBookBorrowAction());
 		
 		//用户信息修改与删除
 		JButton userModiAndDelButton = new JButton();
@@ -131,8 +145,12 @@ public class Library extends JFrame {
 		//初始化新书订购管理菜单
 		JMenu bookOrderMenu = new JMenu();
 		bookOrderMenu.setIcon(LoadIcon.getIcon("xsdgcd.jpg"));
-		bookOrderMenu.addActionListener(new TempListener());
-
+		
+		JMenuItem bookOrderItem = new JMenuItem("图书信息添加");
+		bookOrderItem.setIcon(LoadIcon.getIcon("addBookInfoMenuBar.png"));
+		bookOrderItem.addActionListener(MenuActions.getBookAddAction());
+		setPermission(bookOrderItem);
+		bookOrderMenu.add(bookOrderItem);
 		 
 		//初始化基础数据维护菜单
 		JMenu baseMenu = new JMenu();
@@ -140,7 +158,6 @@ public class Library extends JFrame {
 		{
 			JMenu readerManagerMenu = new JMenu("读者信息管理");
 			readerManagerMenu.setIcon(LoadIcon.getIcon("ReaderManage.png"));
-			readerManagerMenu.addActionListener(new TempListener());
 			setPermission(readerManagerMenu);
 			
 			JMenu BookInformationMenu = new JMenu("图书信息管理");
@@ -174,16 +191,16 @@ public class Library extends JFrame {
 			baseMenu.add(readerManagerMenu);
 			baseMenu.addSeparator();//添加分隔符
 			baseMenu.add(BookInformationMenu);
-			baseMenu.addActionListener(new TempListener());
 		}
 		
 		JMenu borrowManageMenu = new JMenu(); 							// 借阅管理
 		borrowManageMenu.setIcon(LoadIcon.getIcon("jyglcd.jpg"));
-		borrowManageMenu.addActionListener(new TempListener());
-
+		JMenuItem borrowManageItem = new JMenuItem("借阅图书管理");
+		borrowManageItem.setIcon(LoadIcon.getIcon("bookBorrowMenuBar.png"));
+		borrowManageItem.addActionListener(MenuActions.getBookBorrowAction());
+		
 		JMenu sysManageMenu = new JMenu(); 								// 系统维护
 		sysManageMenu.setIcon(LoadIcon.getIcon("jcwhcd.jpg"));
-		sysManageMenu.addActionListener(new TempListener());
 		
 		JMenuItem aboutSoftItem = new JMenuItem("关于软件");				//关于软件
 		aboutSoftItem.setIcon(LoadIcon.getIcon("AboutSoftware.png"));
@@ -196,8 +213,9 @@ public class Library extends JFrame {
 		setPermission(userManageMenuItem);
 		sysManageMenu.add(userManageMenuItem);
 		
-		//以后再写
 		JMenuItem modifyPassWordItem = new JMenuItem("修改当前用户密码");
+		modifyPassWordItem.setIcon(LoadIcon.getIcon("modifyUserPassword.png"));
+		modifyPassWordItem.addActionListener(MenuActions.getUserPasswordAction());
 		sysManageMenu.add(modifyPassWordItem);
 		
 		menuBar.add(baseMenu); 				// 添加基础数据维护菜单到菜单栏
@@ -205,13 +223,5 @@ public class Library extends JFrame {
 		menuBar.add(borrowManageMenu); 		// 添加借阅管理菜单到菜单栏
 		menuBar.add(sysManageMenu); 		// 添加系统维护菜单到菜单栏
 		return menuBar;
-	}
-	
-	//不做任何事
-	private class TempListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//do nothing
-		}
 	}
 }

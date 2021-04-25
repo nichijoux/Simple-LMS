@@ -178,7 +178,6 @@ public class UserManageFrame extends JInternalFrame {
 			
 			String command = "deleteUser\n";
 			String username = result[table.getSelectedRow()][0];
-			JOptionPane.showMessageDialog(null, username);
 			if(username.equals("root")) {
 				JOptionPane.showMessageDialog(null, "该用户不可删除");
 				return;
@@ -218,7 +217,11 @@ public class UserManageFrame extends JInternalFrame {
 			User user = list.get(i);
 			result[i][0] = user.getUserName();
 			result[i][1] = user.getPassword();
+			if(!LoginFrame.UserName.equals("root") && result[i][0].equals("root"))
+				result[i][1] = "*********";
 			result[i][2] = user.getUserType();
+			if(result[i][0].equals("root"))
+				result[i][2] = "超级管理员";
 		}
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		model.setDataVector(result, columnNames);

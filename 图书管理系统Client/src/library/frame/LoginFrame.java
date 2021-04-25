@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -16,15 +18,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import library.util.LoadIcon;
 
 //登录窗口
 @SuppressWarnings("serial")
 public class LoginFrame extends JFrame{
-	@SuppressWarnings("unused")
-	private static String UserName;			//能正确登录的用户名
-	@SuppressWarnings("unused")
-	private static String PassWord;			//能正确登录的密码
+	public static String UserName;			//能正确登录的用户名
+	public static String PassWord;			//能正确登录的密码
 	private JTextField username;		//用户名
 	private JPasswordField password;	//密码
 	private JButton loginButton;		//登录按钮
@@ -53,6 +54,7 @@ public class LoginFrame extends JFrame{
 		username = new JTextField(15);		//用户名框
 		username.setFont(font);
 		password = new JPasswordField(15);	//密码框
+		password.addKeyListener(new EnterKeyAction());
 		password.setFont(font);
 		JLabel userLabel = new JLabel();	//显示用户名三字
 		userLabel.setIcon(LoadIcon.getIcon("username.jpg"));
@@ -122,6 +124,7 @@ public class LoginFrame extends JFrame{
 			password.setText("");
 		}
 	}
+
 	
 	//登录监听器
 	private class LoginAction implements ActionListener{
@@ -186,5 +189,14 @@ public class LoginFrame extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			new RegisterFrame();
 		}
+	}
+	
+	//回车事件
+	private class EnterKeyAction extends KeyAdapter{
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_ENTER)
+				loginButton.doClick();
+		}		
 	}
 }
