@@ -21,7 +21,6 @@
    	6. 使用时服务器端IP必须固定,否则客户端无法连接服务器
 
 ### 该项目使用方法:
-
  	1. 建立library数据库,并将book.sql转化为book,user等表
  	2. 下载server端和client端导入编译器中，若仅在本地运行则直接运行即可,若要测试C/S模式则只需将LoginFrame.java中的hostname改为服务器主机IP即可
- 	3. 修改服务器端OperateDataBase.java里**DateBaseUser（账号）**和**DataBasePass（密码）**的值即可
+ 	3. 修改服务器端OperateDataBase.java里DateBaseUser（账号）和DataBasePass（密码）的值即可
