@@ -36,6 +36,7 @@ public class RegisterFrame extends JFrame {
 		setFont(font);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(530, 370, 408, 248);
+		setIconImage(LoadIcon.getIcon("registerFrame.png").getImage());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
